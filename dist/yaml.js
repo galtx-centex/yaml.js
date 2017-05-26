@@ -80,7 +80,7 @@ Escaper = (function() {
 
   Escaper.PATTERN_MAPPING_ESCAPEES = new Pattern(Escaper.LIST_ESCAPEES.join('|').split('\\').join('\\\\'));
 
-  Escaper.PATTERN_SINGLE_QUOTING = new Pattern('[\\s\'":{}[\\],&*#?]|^[-?|<>=!%@`]');
+  Escaper.PATTERN_SINGLE_QUOTING = new Pattern('[\'":{}[\\],*#?]|^[-?|<>=!%@`]');
 
   Escaper.requiresDoubleQuoting = function(value) {
     return this.PATTERN_CHARACTERS_TO_ESCAPE.test(value);
@@ -295,13 +295,14 @@ Inline = (function() {
     }
     type = typeof value;
     if (type === 'object') {
-      if (value instanceof Date) {
-        return value.toISOString();
-      } else if (objectEncoder != null) {
+      if (objectEncoder != null) {
         result = objectEncoder(value);
         if (typeof result === 'string' || (result != null)) {
           return result;
         }
+      }
+      if (value instanceof Date) {
+        return value.toISOString();
       }
       return this.dumpObject(value);
     }
@@ -315,7 +316,7 @@ Inline = (function() {
       return (type === 'string' ? "'" + value + "'" : String(parseFloat(value)));
     }
     if (type === 'number') {
-      return (value === Infinity ? '.Inf' : (value === -Infinity ? '-.Inf' : (isNaN(value) ? '.NaN' : value)));
+      return (value === 2e308 ? '.Inf' : (value === -2e308 ? '-.Inf' : (isNaN(value) ? '.NaN' : value)));
     }
     if (Escaper.requiresDoubleQuoting(value)) {
       return Escaper.escapeWithDoubleQuotes(value);
@@ -436,7 +437,7 @@ Inline = (function() {
   };
 
   Inline.parseSequence = function(sequence, context) {
-    var e, error, i, isQuoted, len, output, ref, value;
+    var e, i, isQuoted, len, output, ref, value;
     output = [];
     len = sequence.length;
     i = context.i;
@@ -559,11 +560,11 @@ Inline = (function() {
       case 'false':
         return false;
       case '.inf':
-        return Infinity;
+        return 2e308;
       case '.nan':
-        return NaN;
+        return 0/0;
       case '-.inf':
-        return Infinity;
+        return 2e308;
       default:
         firstChar = scalarLower.charAt(0);
         switch (firstChar) {
@@ -742,7 +743,7 @@ Parser = (function() {
   }
 
   Parser.prototype.parse = function(value, exceptionOnInvalidType, objectDecoder) {
-    var alias, allowOverwrite, block, c, context, data, e, error, error1, error2, first, i, indent, isRef, j, k, key, l, lastKey, len, len1, len2, len3, lineCount, m, matches, mergeNode, n, name, parsed, parsedItem, parser, ref, ref1, ref2, refName, refValue, val, values;
+    var alias, allowOverwrite, block, c, context, data, e, first, i, indent, isRef, j, k, key, l, lastKey, len, len1, len2, len3, lineCount, m, matches, mergeNode, n, name, parsed, parsedItem, parser, ref, ref1, ref2, refName, refValue, val, values;
     if (exceptionOnInvalidType == null) {
       exceptionOnInvalidType = false;
     }
@@ -919,8 +920,8 @@ Parser = (function() {
         if (1 === lineCount || (2 === lineCount && Utils.isEmpty(this.lines[1]))) {
           try {
             value = Inline.parse(this.lines[0], exceptionOnInvalidType, objectDecoder);
-          } catch (error1) {
-            e = error1;
+          } catch (error) {
+            e = error;
             e.parsedLine = this.getRealCurrentLineNb() + 1;
             e.snippet = this.currentLine;
             throw e;
@@ -947,8 +948,8 @@ Parser = (function() {
         } else if ((ref2 = Utils.ltrim(value).charAt(0)) === '[' || ref2 === '{') {
           try {
             return Inline.parse(value, exceptionOnInvalidType, objectDecoder);
-          } catch (error2) {
-            e = error2;
+          } catch (error) {
+            e = error;
             e.parsedLine = this.getRealCurrentLineNb() + 1;
             e.snippet = this.currentLine;
             throw e;
@@ -1050,7 +1051,7 @@ Parser = (function() {
   };
 
   Parser.prototype.parseValue = function(value, exceptionOnInvalidType, objectDecoder) {
-    var e, error, foldedIndent, matches, modifiers, pos, ref, ref1, val;
+    var e, foldedIndent, matches, modifiers, pos, ref, ref1, val;
     if (0 === value.indexOf('*')) {
       pos = value.indexOf('#');
       if (pos !== -1) {
@@ -1742,7 +1743,7 @@ Utils = (function() {
           name = ref[j];
           try {
             xhr = new ActiveXObject(name);
-          } catch (undefined) {}
+          } catch (error) {}
         }
       }
     }
