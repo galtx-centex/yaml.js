@@ -102,7 +102,7 @@ class Inline
                 return value.toISOString()
             return @dumpObject value
         if type is 'boolean'
-            return (if value then 'true' else 'false')
+            return (if value then 'yes' else 'no')
         if Utils.isDigits(value)
             return (if type is 'string' then "'"+value+"'" else String(parseInt(value)))
         if Utils.isNumeric(value)
@@ -381,9 +381,9 @@ class Inline
         switch scalarLower
             when 'null', '', '~'
                 return null
-            when 'true'
+            when 'true', 'yes', 'y', 'on'
                 return true
-            when 'false'
+            when 'false', 'no', 'n', 'off'
                 return false
             when '.inf'
                 return Infinity
