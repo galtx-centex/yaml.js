@@ -307,7 +307,7 @@ Inline = (function() {
       return this.dumpObject(value);
     }
     if (type === 'boolean') {
-      return (value ? 'true' : 'false');
+      return (value ? 'yes' : 'no');
     }
     if (Utils.isDigits(value)) {
       return (type === 'string' ? "'" + value + "'" : String(parseInt(value)));
@@ -556,8 +556,14 @@ Inline = (function() {
       case '~':
         return null;
       case 'true':
+      case 'yes':
+      case 'y':
+      case 'on':
         return true;
       case 'false':
+      case 'no':
+      case 'n':
+      case 'off':
         return false;
       case '.inf':
         return 2e308;
