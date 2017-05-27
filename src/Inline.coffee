@@ -381,9 +381,9 @@ class Inline
         switch scalarLower
             when 'null', '', '~'
                 return null
-            when 'true'
+            when 'true', 'yes', 'y', 'on'
                 return true
-            when 'false'
+            when 'false', 'no', 'n', 'off'
                 return false
             when '.inf'
                 return Infinity
