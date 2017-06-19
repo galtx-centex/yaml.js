@@ -75,7 +75,7 @@ class Yaml
     #
     # @return [String]  A YAML string representing the original JavaScript object
     #
-    @dump: (input, inline = 2, indent = 4, exceptionOnInvalidType = false, objectEncoder = null) ->
+    @dump: (input, inline = 2, indent = 2, exceptionOnInvalidType = false, objectEncoder = null) ->
         yaml = new Dumper()
         yaml.indentation = indent
 

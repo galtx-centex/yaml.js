@@ -12,6 +12,7 @@
   "main": "./lib/Yaml.js",
   "dependencies": {
     "argparse": "^1.0.7",
+    "dateformat": "^2.0.0",
     "glob": "^7.0.5"
   },
   "devDependencies": {
