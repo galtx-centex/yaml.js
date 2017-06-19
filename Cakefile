@@ -51,7 +51,7 @@ task 'build', 'build project', ->
                 if toCompile.length
                     compileOne()
                 else
-                    browserify()
+                    compileSpec()
 
     # Browserify
     unless fs.existsSync distDir

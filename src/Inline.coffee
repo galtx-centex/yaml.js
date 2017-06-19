@@ -1,3 +1,4 @@
+dateformat = require 'dateformat'
 
 Pattern         = require './Pattern'
 Unescaper       = require './Unescaper'
@@ -99,7 +100,7 @@ class Inline
                 if typeof result is 'string' or result?
                     return result
             if value instanceof Date
-                return value.toISOString()
+                return dateformat value, 'isoDate', true
             return @dumpObject value
         if type is 'boolean'
             return (if value then 'yes' else 'no')
