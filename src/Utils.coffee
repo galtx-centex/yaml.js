@@ -232,7 +232,7 @@ class Utils
 
         # If no hour is given, return a date with day precision
         unless info.hour?
-            date = new Date Date.UTC(year, month, day)
+            date = new Date year, month, day
             return date
 
         # Extract hour, minute, second

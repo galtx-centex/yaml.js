@@ -100,7 +100,7 @@ class Inline
                 if typeof result is 'string' or result?
                     return result
             if value instanceof Date
-                return dateformat value, 'isoDate', true
+                return dateformat value, 'isoDate'
             return @dumpObject value
         if type is 'boolean'
             return (if value then 'yes' else 'no')

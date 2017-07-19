@@ -433,7 +433,7 @@ describe 'Parsed YAML Basic Types', ->
 
     it 'can be date', ->
 
-        aDate = new Date Date.UTC(1976, 7-1, 31, 0, 0, 0, 0)
+        aDate = new Date 1976, 7-1, 31
 
         withDatesToTime = (input) ->
             return input
@@ -1174,7 +1174,7 @@ describe 'Dumped YAML Basic Types', ->
 
     it 'can be date', ->
 
-        aDate = new Date Date.UTC(1976, 7-1, 31, 0, 0, 0, 0)
+        aDate = new Date 1976, 7-1, 31
 
         withDatesToTime = (input) ->
             return input
